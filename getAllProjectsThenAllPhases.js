@@ -2,9 +2,10 @@
 
 const { TOKEN } = require('./config');
 const axios = require('axios');
+const page = 1; // (1-8)
 
 // First, get all projects (including inactive ones with increased page size)
-axios.get('https://api.float.com/v3/projects?per_page=1000', {
+axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
     headers: {
         'Authorization': `Bearer ${TOKEN}`,
         'User-Agent': 'Project Fetcher Script (admin@example.com)'
@@ -60,7 +61,7 @@ axios.get('https://api.float.com/v3/projects?per_page=1000', {
         allProjectPhases.forEach(projectData => {
             console.log(`\nProject: ${projectData.projectName} (ID: ${projectData.projectId})`);
             if (projectData.phases) {
-                // console.log('Phases:', projectData.phases);
+                console.log('Phases:', projectData.phases);
             } else {
                 console.log('No phases found or error occurred:', projectData.error);
             }
