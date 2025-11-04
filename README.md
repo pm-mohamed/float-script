@@ -14,19 +14,25 @@ Scripts for fixing float phases issue and managing Float API data.
 
 ## Available Scripts
 
-### 1. Get All Projects and Their Phases
+### 1. Get All Projects
+```bash
+node getAllProjects.js
+```
+**Purpose:** Retrieves and displays all projects from your Float account. Shows project details including name, ID, status, active state, creation date, and tags.
+
+### 2. Get All Projects and Their Phases
 ```bash
 node getAllProjectsThenAllPhases.js
 ```
 **Purpose:** Retrieves all projects from your Float account and fetches all phases for each project.
 
-### 2. Get Phases by Project ID
+### 3. Get Phases by Project ID
 ```bash
 node getPhasesByProjectId.js
 ```
 **Purpose:** Retrieves phases for a specific project (currently hardcoded to project ID 10766714). Edit the `PROJECT_ID` variable in the file to target a different project.
 
-### 3. Edit Sven Test Project
+### 4. Edit Sven Test Project
 ```bash
 node editSvenTestProject.js
 ```
@@ -36,7 +42,7 @@ node editSvenTestProject.js
 - Restores the original end date
 - This process helps resolve certain Float API issues with phase dates
 
-### 4. Edit All Projects and Phases
+### 5. Edit All Projects and Phases
 ```bash
 node editAllProjectsPhases.js
 ```
