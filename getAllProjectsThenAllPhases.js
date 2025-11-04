@@ -3,8 +3,8 @@
 const { TOKEN } = require('./config');
 const axios = require('axios');
 
-// First, get all projects
-axios.get('https://api.float.com/v3/projects', {
+// First, get all projects (including inactive ones with increased page size)
+axios.get('https://api.float.com/v3/projects?per_page=1000', {
     headers: {
         'Authorization': `Bearer ${TOKEN}`,
         'User-Agent': 'Project Fetcher Script (admin@example.com)'
@@ -20,6 +20,8 @@ axios.get('https://api.float.com/v3/projects', {
         console.log('No projects found or unexpected response format');
         return;
     }
+    
+    console.log(`Total projects retrieved: ${projects.length}`);
     
     // Create promises to fetch phases for each project
     const phasePromises = projects.map(project => {
@@ -39,7 +41,7 @@ axios.get('https://api.float.com/v3/projects', {
             };
         })
         .catch(phaseError => {
-            console.log(`Error fetching phases for project ${projectId}:`, phaseError.message);
+            // console.log(`Error fetching phases for project ${projectId}:`, phaseError.message);
             return {
                 projectId: projectId,
                 projectName: project.name,
@@ -54,13 +56,13 @@ axios.get('https://api.float.com/v3/projects', {
 })
 .then(allProjectPhases => {
     if (allProjectPhases) {
-        console.log('\n=== PROJECT PHASES ===');
+        // console.log('\n=== PROJECT PHASES ===');
         allProjectPhases.forEach(projectData => {
-            console.log(`\nProject: ${projectData.projectName} (ID: ${projectData.projectId})`);
+            // console.log(`\nProject: ${projectData.projectName} (ID: ${projectData.projectId})`);
             if (projectData.phases) {
-                console.log('Phases:', projectData.phases);
+                // console.log('Phases:', projectData.phases);
             } else {
-                console.log('No phases found or error occurred:', projectData.error);
+                // console.log('No phases found or error occurred:', projectData.error);
             }
         });
     }
