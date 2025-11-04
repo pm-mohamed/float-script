@@ -2,7 +2,7 @@
 
 const { TOKEN } = require('./config');
 const axios = require('axios');
-const page = 1; // (1-8)
+const page = 8; // (1-8 MUST BE CHANGED)
 
 // First, get all projects (including inactive ones with increased page size)
 axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
