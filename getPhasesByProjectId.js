@@ -2,9 +2,9 @@
 // Retrieve phases for a specific project.
 
 const { TOKEN } = require('./config');
+const { Scrum_Demo_Project_ID } = require('./projectIds');
 const axios = require('axios');
-
-const PROJECT_ID = 10766714;
+const PROJECT_ID = Scrum_Demo_Project_ID;
 
 // Fetch phases for the specific project
 axios.get(`https://api.float.com/v3/phases?project_id=${PROJECT_ID}`, {

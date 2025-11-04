@@ -1,10 +1,13 @@
 // https://developer.float.com/api_reference.html#!/Projects/getProjects
 
 const { TOKEN } = require('./config');
+const { Scrum_Demo_Project_ID } = require('./projectIds');
 const axios = require('axios');
+const page = 8; //Must Match the page of the project in the getAllProjects.js file
+const PROJECT_ID = Scrum_Demo_Project_ID;
 
 // First, get all projects (including inactive ones with increased page size)
-axios.get('https://api.float.com/v3/projects?per_page=1000', {
+axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
     headers: {
         'Authorization': `Bearer ${TOKEN}`,
         'User-Agent': 'Project Fetcher Script (admin@example.com)'
@@ -23,8 +26,7 @@ axios.get('https://api.float.com/v3/projects?per_page=1000', {
     
     console.log(`Total projects retrieved: ${projects.length}`);
     
-    // Find the specific project with ID 10766714
-    const targetProjectId = 10766714;
+    const targetProjectId = PROJECT_ID;
     const targetProject = projects.find(project => {
         const projectId = project.project_id || project.id;
         return projectId == targetProjectId;
