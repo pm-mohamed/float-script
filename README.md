@@ -30,17 +30,20 @@ node getAllProjectsThenAllPhases.js
 ```bash
 node getPhasesByProjectId.js
 ```
-**Purpose:** Retrieves phases for a specific project (currently hardcoded to project ID 10766714). Edit the `PROJECT_ID` variable in the file to target a different project.
+**Purpose:** Retrieves phases for a specific project (currently configured to use `Scrum_Demo_Project_ID` from `projectIds.js`). Edit the `PROJECT_ID` variable or the project IDs in `projectIds.js` to target a different project.
 
-### 4. Edit Sven Test Project
+### 4. Edit Project Phases Test
 ```bash
-node editSvenTestProject.js
+node editProjectPhasesTest.js
 ```
-**Purpose:** A specialized script for fixing phases in a specific project (ID: 10766714). This script:
-- Finds the target project
-- Temporarily updates each phase's end date to a past date
-- Restores the original end date
-- This process helps resolve certain Float API issues with phase dates
+**Purpose:** A specialized script for testing phase fixes on a specific project (configured to use `Scrum_Demo_Project_ID` from `projectIds.js`). This script:
+- Finds the target project from the specified page of projects
+- Fetches all phases for that project
+- Temporarily updates each phase's end date to a past date (2023-12-31)
+- Restores the original end date for each phase
+- Provides detailed logging for each operation including success/failure status
+- Includes rate limiting to avoid API throttling
+- Displays comprehensive summary and final phase states after all updates
 
 ### 5. Edit All Projects and Phases
 ```bash
