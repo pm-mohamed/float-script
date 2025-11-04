@@ -11,7 +11,7 @@ axios.get('https://api.float.com/v3/projects?per_page=1000', {
     }
 })
 .then(response => {
-    // console.log('All Projects:', response.data);
+    console.log('All Projects:', response.data);
     
     // Extract project IDs from the response
     const projects = response.data.data || response.data;
@@ -60,7 +60,7 @@ axios.get('https://api.float.com/v3/projects?per_page=1000', {
         allProjectPhases.forEach(projectData => {
             console.log(`\nProject: ${projectData.projectName} (ID: ${projectData.projectId})`);
             if (projectData.phases) {
-                console.log('Phases:', projectData.phases);
+                // console.log('Phases:', projectData.phases);
             } else {
                 console.log('No phases found or error occurred:', projectData.error);
             }
