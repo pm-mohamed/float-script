@@ -3,9 +3,10 @@
 const { TOKEN } = require('./config');
 const axios = require('axios');
 
-axios.get('https://api.float.com/v1/projects', {
+axios.get('https://api.float.com/v3/projects', {
     headers: {
-        'Authorization': `Bearer ${TOKEN}`
+        'Authorization': `Bearer ${TOKEN}`,
+        'User-Agent': 'Project Fetcher Script (admin@example.com)'
     }
 })
 .then(response => {
