@@ -57,3 +57,17 @@ node editAllProjectsPhases.js
 - Provides detailed logging and error handling for each operation
 - Includes rate limiting to avoid API throttling
 - Displays a comprehensive summary of all operations performed
+
+### 6. Edit Project Phases by ID
+```bash
+node editProjectPhasesById.js
+```
+**Purpose:** A focused script for fixing phase issues on a specific project by directly using its project ID (currently configured to use `Sven_Test_Project_ID` from `projectIds.js`). This script:
+- Fetches all phases for the specified project ID directly
+- Temporarily updates each phase's end date to a past date (2023-12-31)
+- Automatically adjusts start dates if they conflict with the temporary end date
+- Restores the original end date and start date for each phase
+- Provides detailed logging for each operation including success/failure status
+- Includes rate limiting to avoid API throttling
+- Displays comprehensive summary and fetches final phase states after all updates
+- Ideal for testing phase fixes on individual projects without needing to search through all projects
