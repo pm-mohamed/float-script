@@ -71,3 +71,18 @@ node editProjectPhasesById.js
 - Includes rate limiting to avoid API throttling
 - Displays comprehensive summary and fetches final phase states after all updates
 - Ideal for testing phase fixes on individual projects without needing to search through all projects
+
+### 7. Set All Project Phases End Date to End of 2025 (Except Shopware)
+```bash
+node setAllProjectsPhasesEndDateToEndOf2025ExceptSw.js
+```
+**Purpose:** A targeted script for updating all project phases to end on December 31, 2025, while excluding specific Shopware projects. This script:
+- Retrieves all projects from a specified page (page variable must be changed in the script)
+- Excludes predefined Shopware project IDs from processing (FELDHAUS, DIHK, SHOCKMANN, DEISS projects)
+- Updates all phase end dates to 2025-12-31 for eligible projects
+- Preserves all other phase properties (start date, name, budget, etc.)
+- Provides comprehensive logging including skipped projects and reasons
+- Includes rate limiting between operations to avoid API throttling
+- Displays detailed summary of processed vs skipped projects and phase update statistics
+- Fetches and displays updated phase states after all modifications
+- Ideal for bulk updating project timelines while protecting critical Shopware infrastructure projects
