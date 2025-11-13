@@ -1,9 +1,40 @@
-// Combined script: Get all projects and edit all their phases
+// Script: Set all project phases end date to end of 2025 except Shopware projects
 // https://developer.float.com/api_reference.html#!/Projects/getProjects
 
 const { TOKEN } = require('./config');
+const {
+    FELDHAUS_ID,
+    FEILDHAUS_ONLINE_SHOP_OM_ID,
+    FEILDHAUS_ONLINE_SHOP_ID,
+    DIHK_AHK_ID,
+    DIHK_RELAUNCH_ID,
+    DIHK_OM_SEA_ID,
+    DIHK_ONLINE_SHOP_ID,
+    DIHK_ONLINE_SHOP_OM_ID,
+    SHOCKMANN_ID,
+    DEISS_ONLINE_SHOP_ID,
+    DEISS_APP_ID
+} = require('./projectIds');
 const axios = require('axios');
-const page = 1; // (1-8 MUST BE CHANGED)
+const page = 8; // (1-8 MUST BE CHANGED)
+
+// Excluded project IDs (Shopware projects)
+const EXCLUDED_PROJECT_IDS = [
+    FELDHAUS_ID,
+    FEILDHAUS_ONLINE_SHOP_OM_ID,
+    FEILDHAUS_ONLINE_SHOP_ID,
+    DIHK_AHK_ID,
+    DIHK_RELAUNCH_ID,
+    DIHK_OM_SEA_ID,
+    DIHK_ONLINE_SHOP_ID,
+    DIHK_ONLINE_SHOP_OM_ID,
+    SHOCKMANN_ID,
+    DEISS_ONLINE_SHOP_ID,
+    DEISS_APP_ID
+];
+
+// Target end date for all phases (end of 2025)
+const TARGET_END_DATE = '2025-12-31';
 
 // First, get all projects (including inactive ones with increased page size)
 axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
@@ -28,6 +59,20 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
     // Create promises to fetch and edit phases for each project
     const projectProcessingPromises = projects.map(async (project) => {
         const projectId = project.project_id || project.id;
+        
+        // Check if this project should be excluded (Shopware projects)
+        if (EXCLUDED_PROJECT_IDS.includes(projectId)) {
+            console.log(`\n=== SKIPPING Project: ${project.name} (ID: ${projectId}) - Shopware project excluded ===`);
+            return {
+                projectId: projectId,
+                projectName: project.name,
+                skipped: true,
+                reason: 'Shopware project excluded',
+                phases: null,
+                phaseUpdates: []
+            };
+        }
+        
         console.log(`\n=== Processing Project: ${project.name} (ID: ${projectId}) ===`);
         
         try {
@@ -41,21 +86,22 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
             
             const phases = phaseResponse.data.data || phaseResponse.data;
             
-            if (!phases || !Array.isArray(phases)) {
-                console.log(`No phases found for project ${projectId}`);
+            if (!phases || !Array.isArray(phases) || phases.length === 0) {
+                console.log(`No phases found for project ${projectId} - skipping project`);
                 return {
                     projectId: projectId,
                     projectName: project.name,
                     phases: null,
+                    skipped: true,
+                    reason: 'No phases found',
                     phaseUpdates: []
                 };
             }
 
             console.log(`Found ${phases.length} phases for project ${projectId}`);
             
-            // Store original end dates and update phases
+            // Update phases end dates to 2025-12-31
             const phaseUpdates = [];
-            const pastDate = '2023-12-31'; // Use a past date, but ensure it's reasonable
             
             for (const phase of phases) {
                 const phaseId = phase.phase_id || phase.id;
@@ -65,18 +111,14 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
                 console.log(`Original end date: ${originalEndDate}`);
                 
                 try {
-                    // First update: set end_date to past date
-                    console.log(`Updating phase ${phaseId} end date to past date: ${pastDate}`);
-                    console.log(`Current start date: ${phase.start_date}`);
-                    
-                    // Ensure start_date is before end_date
-                    const adjustedStartDate = new Date(phase.start_date) > new Date(pastDate) ? '2023-01-01' : phase.start_date;
+                    // Update phase end date to TARGET_END_DATE (2025-12-31)
+                    console.log(`Updating phase ${phaseId} end date from ${originalEndDate} to ${TARGET_END_DATE}`);
                     
                     const updatePayload = {
                         name: phase.name,
                         project_id: phase.project_id,
-                        start_date: adjustedStartDate,
-                        end_date: pastDate,
+                        start_date: phase.start_date,
+                        end_date: TARGET_END_DATE,
                         notes: phase.notes || '',
                         color: phase.color,
                         budget_total: phase.budget_total,
@@ -86,8 +128,6 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
                         status: phase.status,
                         active: phase.active
                     };
-                    
-                    console.log(`Using start_date: ${adjustedStartDate}, end_date: ${pastDate}`);
                     
                     await axios.put(`https://api.float.com/v3/phases/${phaseId}`, updatePayload, {
                         headers: {
@@ -97,42 +137,12 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
                         }
                     });
                     
-                    console.log(`✓ Phase ${phaseId} updated with past date`);
-                    
-                    // Wait a moment between requests to avoid rate limiting
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    
-                    // Second update: restore original end_date
-                    console.log(`Restoring phase ${phaseId} end date to original: ${originalEndDate}`);
-                    
-                    const restorePayload = {
-                        name: phase.name,
-                        project_id: phase.project_id,
-                        start_date: phase.start_date,
-                        end_date: originalEndDate,
-                        notes: phase.notes || '',
-                        color: phase.color,
-                        budget_total: phase.budget_total,
-                        default_hourly_rate: phase.default_hourly_rate,
-                        non_billable: phase.non_billable,
-                        tentative: phase.tentative,
-                        status: phase.status,
-                        active: phase.active
-                    };
-                    
-                    await axios.put(`https://api.float.com/v3/phases/${phaseId}`, restorePayload, {
-                        headers: {
-                            'Authorization': `Bearer ${TOKEN}`,
-                            'User-Agent': 'Project Fetcher Script (admin@example.com)',
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    
-                    console.log(`✓ Phase ${phaseId} restored to original end date`);
+                    console.log(`✓ Phase ${phaseId} end date updated successfully to ${TARGET_END_DATE}`);
                     
                     phaseUpdates.push({
                         phaseId: phaseId,
                         originalEndDate: originalEndDate,
+                        newEndDate: TARGET_END_DATE,
                         status: 'success'
                     });
                     
@@ -145,6 +155,7 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
                     phaseUpdates.push({
                         phaseId: phaseId,
                         originalEndDate: originalEndDate,
+                        newEndDate: TARGET_END_DATE,
                         status: 'error',
                         error: error.message
                     });
@@ -180,15 +191,32 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
     if (allProjectResults) {
         console.log('\n=== ALL PROJECTS PROCESSING COMPLETE ===');
         
+        let totalProjectsRetrieved = 0;
         let totalProjectsProcessed = 0;
+        let totalProjectsSkipped = 0;
         let totalPhasesProcessed = 0;
         let totalSuccessfulUpdates = 0;
         let totalFailedUpdates = 0;
+        let skippedProjects = [];
         
         for (const projectData of allProjectResults) {
-            totalProjectsProcessed++;
+            totalProjectsRetrieved++;
             
             console.log(`\n=== Project: ${projectData.projectName} (ID: ${projectData.projectId}) ===`);
+            
+            // Check if project was skipped
+            if (projectData.skipped) {
+                totalProjectsSkipped++;
+                skippedProjects.push({
+                    name: projectData.projectName,
+                    id: projectData.projectId,
+                    reason: projectData.reason
+                });
+                console.log(`SKIPPED: ${projectData.reason}`);
+                continue;
+            }
+            
+            totalProjectsProcessed++;
             
             if (projectData.phases) {
                 totalPhasesProcessed += projectData.phases.length;
@@ -250,11 +278,22 @@ axios.get(`https://api.float.com/v3/projects?per_page=100&page=${page}`, {
         
         // Final summary
         console.log('\n=== FINAL SUMMARY ===');
+        console.log(`Total projects retrieved: ${totalProjectsRetrieved}`);
         console.log(`Total projects processed: ${totalProjectsProcessed}`);
+        console.log(`Total projects skipped: ${totalProjectsSkipped}`);
         console.log(`Total phases processed: ${totalPhasesProcessed}`);
-        console.log(`Total successful phase updates: ${totalSuccessfulUpdates}`);
+        console.log(`Total successful phase updates to ${TARGET_END_DATE}: ${totalSuccessfulUpdates}`);
         console.log(`Total failed phase updates: ${totalFailedUpdates}`);
-        console.log('=== PROCESSING COMPLETE ===');
+        
+        if (skippedProjects.length > 0) {
+            console.log('\n=== SKIPPED PROJECTS DETAIL ===');
+            skippedProjects.forEach((project, index) => {
+                console.log(`${index + 1}. ${project.name} (ID: ${project.id}) - ${project.reason}`);
+            });
+        }
+        
+        console.log('\n=== PROCESSING COMPLETE ===');
+        console.log(`All eligible project phases have been updated to end on ${TARGET_END_DATE}`);
     }
 })
 .catch(error => {
