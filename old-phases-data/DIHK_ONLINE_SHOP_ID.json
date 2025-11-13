@@ -1,0 +1,36 @@
+[
+    {
+        "phase_id": 772309,
+        "project_id": 6254225,
+        "name": "Relaunch Shopware 6",
+        "color": "d23197",
+        "notes": "",
+        "start_date": "2024-04-25",
+        "end_date": "2024-12-31",
+        "non_billable": 0,
+        "budget_total": null,
+        "default_hourly_rate": "112.5000",
+        "tentative": 0,
+        "status": 2,
+        "active": 0,
+        "created": "2024-04-25 14:46:06",
+        "modified": "2025-11-05 08:31:20"
+    },
+    {
+        "phase_id": 721776,
+        "project_id": 6254225,
+        "name": "Server Migration Onlineshop",
+        "color": "706f6c",
+        "notes": "",
+        "start_date": "2024-02-22",
+        "end_date": "2024-09-16",
+        "non_billable": 0,
+        "budget_total": null,
+        "default_hourly_rate": "112.5000",
+        "tentative": 0,
+        "status": 2,
+        "active": 0,
+        "created": "2024-02-29 11:12:05",
+        "modified": "2025-11-05 08:31:22"
+    }
+]

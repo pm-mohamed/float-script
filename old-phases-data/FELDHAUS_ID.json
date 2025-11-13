@@ -1,0 +1,36 @@
+[
+    {
+        "phase_id": 1352988,
+        "project_id": 9416588,
+        "name": "SLA Feldhaus Shopware 6",
+        "color": null,
+        "notes": "",
+        "start_date": "2025-06-11",
+        "end_date": "2025-11-30",
+        "non_billable": 0,
+        "budget_total": null,
+        "default_hourly_rate": "118.7500",
+        "tentative": 0,
+        "status": 2,
+        "active": 1,
+        "created": "2025-07-02 14:30:16",
+        "modified": "2025-11-06 08:52:35"
+    },
+    {
+        "phase_id": 1053684,
+        "project_id": 9416588,
+        "name": "Feldhaus Relaunch",
+        "color": null,
+        "notes": "",
+        "start_date": "2024-07-01",
+        "end_date": "2025-06-17",
+        "non_billable": 0,
+        "budget_total": null,
+        "default_hourly_rate": "118.7500",
+        "tentative": 0,
+        "status": 2,
+        "active": 1,
+        "created": "2024-12-23 13:58:32",
+        "modified": "2025-11-05 08:48:05"
+    }
+]
