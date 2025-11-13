@@ -1,0 +1,19 @@
+[
+    {
+        "phase_id": 361760,
+        "project_id": 6223426,
+        "name": "Phasen Test",
+        "color": "000000",
+        "notes": "Testphase",
+        "start_date": "2022-11-11",
+        "end_date": "2025-11-12",
+        "non_billable": 1,
+        "budget_total": "40.0000",
+        "default_hourly_rate": null,
+        "tentative": 0,
+        "status": 2,
+        "active": 1,
+        "created": "2022-11-11 15:16:06",
+        "modified": "2025-11-05 08:29:45"
+    }
+]

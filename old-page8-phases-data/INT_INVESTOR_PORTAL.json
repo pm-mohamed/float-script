@@ -1,0 +1,19 @@
+[
+    {
+        "phase_id": 200447,
+        "project_id": 6223448,
+        "name": "INT - Headless CMS",
+        "color": "9877CA",
+        "notes": "",
+        "start_date": "2022-01-23",
+        "end_date": "2024-04-26",
+        "non_billable": 0,
+        "budget_total": "12525.0000",
+        "default_hourly_rate": null,
+        "tentative": 0,
+        "status": 2,
+        "active": 0,
+        "created": "2022-02-09 13:34:29",
+        "modified": "2025-11-05 08:29:45"
+    }
+]
