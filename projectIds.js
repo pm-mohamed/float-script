@@ -13,6 +13,12 @@ const DIHK_OM_SEA_ID = 6257405; // Page 7 - DIHK - Onlineshop - OM SEA
 const DIHK_ONLINE_SHOP_ID = 6254225; // Page 7 - DIHK - Onlineshop - Entwicklung
 const DIHK_ONLINE_SHOP_OM_ID = 6223463; // Page 7 - DIHK - Onlineshop - OM
 
+const SHOCKMANN_ID = 6338192; // Page 7 - SCHO - Onlineshop - Entwicklung
+
+const DEISS_ONLINE_SHOP_ID = 9283805; // Page 1 - DEISS  - Online-Shop
+const DEISS_APP_ID = 6223468; // Page 7 - DEISS - APP - Entwicklung
+
+
 module.exports = {
     Sven_Test_Project_ID,
     Scrum_Demo_Project_ID,
@@ -23,5 +29,8 @@ module.exports = {
     DIHK_AHK_ID,
     DIHK_OM_SEA_ID,
     DIHK_ONLINE_SHOP_ID,
-    DIHK_ONLINE_SHOP_OM_ID
+    DIHK_ONLINE_SHOP_OM_ID,
+    SHOCKMANN_ID,
+    DEISS_APP_ID,
+    DEISS_ONLINE_SHOP_ID
 };
